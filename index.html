@@ -105,13 +105,7 @@
       object-fit: cover;
       border: 2px solid rgba(255, 107, 0, 0.4);
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-      transition: transform 0.25s ease, border-color 0.25s ease;
       background: #000;
-    }
-
-    .club-logo:hover {
-      transform: scale(1.08);
-      border-color: var(--accent-orange);
     }
 
     .logo-divider {
@@ -161,28 +155,9 @@
       gap: 12px;
     }
 
-    .meta-item {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .meta-label {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--text-sub);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .meta-value {
-      font-size: 13px;
-      font-weight: 800;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .meta-label { font-size: 10px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; }
+    .meta-value { font-size: 13px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 6px; }
 
     /* Countdown Timer Widget */
     .countdown-box {
@@ -210,204 +185,130 @@
     }
 
     .guide-title {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--accent-orange);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 12px; font-weight: 800; color: var(--accent-orange);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
     }
 
-    .guide-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .guide-step {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 12px;
-      color: #d0d0dc;
-      line-height: 1.4;
-    }
-
+    .guide-steps { display: flex; flex-direction: column; gap: 10px; }
+    .guide-step { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: #d0d0dc; line-height: 1.4; }
     .step-badge {
-      background: rgba(255, 107, 0, 0.2);
-      color: var(--accent-orange);
-      font-weight: 800;
-      font-size: 10px;
-      min-width: 20px;
-      height: 20px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
+      background: rgba(255, 107, 0, 0.2); color: var(--accent-orange); font-weight: 800;
+      font-size: 10px; min-width: 20px; height: 20px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
     }
 
     /* Input Controls */
     .form-group { margin-bottom: 18px; }
+    label { display: block; font-size: 11px; font-weight: 700; color: #c4c4d0; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-    label {
-      display: block;
-      font-size: 11px;
-      font-weight: 700;
-      color: #c4c4d0;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    input[type="text"], input[type="email"], input[type="tel"] {
+      width: 100%; padding: 14px 16px; background: var(--input-bg);
+      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px;
+      color: #fff; font-size: 14px; outline: none; transition: all 0.25s ease;
     }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"] {
-      width: 100%;
-      padding: 14px 16px;
-      background: var(--input-bg);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 14px;
-      color: #fff;
-      font-size: 14px;
-      outline: none;
-      transition: all 0.25s ease;
-    }
-
-    input:focus {
-      border-color: var(--accent-orange);
-      box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
-      background: rgba(15, 14, 22, 0.95);
-    }
+    input:focus { border-color: var(--accent-orange); box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2); background: rgba(15, 14, 22, 0.95); }
 
     /* Enhanced File Dropzone */
     .file-dropzone {
-      border: 2px dashed rgba(255, 107, 0, 0.35);
-      background: rgba(10, 9, 15, 0.6);
-      border-radius: 16px;
-      padding: 22px;
-      text-align: center;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.25s ease;
+      border: 2px dashed rgba(255, 107, 0, 0.35); background: rgba(10, 9, 15, 0.6);
+      border-radius: 16px; padding: 22px; text-align: center; cursor: pointer; position: relative; transition: all 0.25s ease;
     }
-
-    .file-dropzone:hover {
-      border-color: var(--accent-orange);
-      background: rgba(255, 107, 0, 0.05);
-    }
-
-    .file-dropzone input[type="file"] {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
-    }
-
+    .file-dropzone:hover { border-color: var(--accent-orange); background: rgba(255, 107, 0, 0.05); }
+    .file-dropzone input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
     .upload-icon { font-size: 24px; margin-bottom: 6px; }
     .upload-title { font-size: 13px; font-weight: 700; color: #fff; }
     .upload-sub { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
 
     /* Main CTA Button */
     .btn-submit {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%);
-      border: none;
-      border-radius: 14px;
-      color: #fff;
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      margin-top: 12px;
-      box-shadow: 0 12px 30px rgba(255, 107, 0, 0.35);
-      transition: all 0.25s ease;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
+      width: 100%; padding: 16px; background: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%);
+      border: none; border-radius: 14px; color: #fff; font-size: 15px; font-weight: 800;
+      letter-spacing: 0.5px; cursor: pointer; margin-top: 12px; box-shadow: 0 12px 30px rgba(255, 107, 0, 0.35);
+      transition: all 0.25s ease; display: flex; justify-content: center; align-items: center; gap: 10px;
     }
-
-    .btn-submit:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 35px rgba(255, 107, 0, 0.5);
-    }
-
+    .btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 35px rgba(255, 107, 0, 0.5); }
     .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; background: #333; box-shadow: none; }
 
     /* Admin Control Hub Elements */
     #adminPanel { display: none; }
     .admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-
     .tab-btn {
-      flex: 1; padding: 12px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      color: var(--text-sub);
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      flex: 1; padding: 12px; background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
+      color: var(--text-sub); font-size: 12px; font-weight: 800; cursor: pointer; transition: all 0.2s ease;
     }
-
     .tab-btn.active {
-      background: rgba(255, 107, 0, 0.2);
-      border-color: var(--accent-orange);
-      color: #fff;
-      box-shadow: 0 0 15px rgba(255, 107, 0, 0.2);
+      background: rgba(255, 107, 0, 0.2); border-color: var(--accent-orange); color: #fff; box-shadow: 0 0 15px rgba(255, 107, 0, 0.2);
     }
-
     .pending-card {
-      background: rgba(10, 9, 15, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 12px;
+      background: rgba(10, 9, 15, 0.85); border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px; padding: 16px; margin-bottom: 12px;
     }
-
     .pending-info { font-size: 13px; line-height: 1.6; margin-bottom: 12px; color: var(--text-sub); }
     .pending-info b { color: #fff; }
     .pending-actions { display: flex; gap: 8px; }
-
     .btn-view {
-      flex: 1; padding: 10px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
-      color: #fff;
-      font-size: 12px;
-      font-weight: 700;
-      text-decoration: none;
-      text-align: center;
+      flex: 1; padding: 10px; background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; color: #fff;
+      font-size: 12px; font-weight: 700; text-decoration: none; text-align: center;
     }
-
     .btn-approve {
-      flex: 1; padding: 10px;
-      background: var(--success-green);
-      border: none;
-      border-radius: 10px;
-      color: #000;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
+      flex: 1; padding: 10px; background: var(--success-green); border: none;
+      border-radius: 10px; color: #000; font-size: 12px; font-weight: 800; cursor: pointer;
     }
-
     #reader { width: 100%; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); background: #000; }
 
-    #status {
-      margin-top: 16px; padding: 14px; border-radius: 12px; font-size: 13px; font-weight: 700; text-align: center; display: none;
+    /* 15-Second Cinematic Popup Overlay */
+    #statementPopup {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(5, 5, 8, 0.85); backdrop-filter: blur(12px);
+      display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px;
     }
-    #status.success { display: block; background: rgba(0, 230, 118, 0.12); border: 1px solid rgba(0, 230, 118, 0.4); color: var(--success-green); }
-    #status.error { display: block; background: rgba(255, 23, 68, 0.12); border: 1px solid rgba(255, 23, 68, 0.4); color: #ff1744; }
+    .popup-card {
+      background: rgba(22, 20, 32, 0.95); border: 1px solid var(--accent-orange);
+      border-radius: 24px; padding: 28px 24px; max-width: 420px; width: 100%; text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 35px rgba(255, 107, 0, 0.25);
+      animation: popupScale 0.3s ease-out forwards;
+    }
+    @keyframes popupScale {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .popup-icon { font-size: 42px; margin-bottom: 12px; }
+    .popup-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .popup-desc { font-size: 13px; color: var(--text-sub); line-height: 1.5; margin-bottom: 20px; }
+    .popup-timer-bar {
+      width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;
+    }
+    .popup-timer-progress {
+      width: 100%; height: 100%; background: var(--accent-orange); animation: countdownBar 15s linear forwards;
+    }
+    @keyframes countdownBar {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
   </style>
 </head>
 <body>
 
   <div class="bg-glow-1"></div>
   <div class="bg-glow-2"></div>
+
+  <!-- 15-Second Cinematic Popup Modal -->
+  <div id="statementPopup">
+    <div class="popup-card">
+      <div class="popup-icon">🎃</div>
+      <div class="popup-title">Statement Request Sent Successfully!</div>
+      <div class="popup-desc">
+        Don't worry! Our admin team will check your payment details shortly. Once verified, your official entry pass will be sent straight to your email.
+      </div>
+      <div class="popup-timer-bar">
+        <div class="popup-timer-progress"></div>
+      </div>
+    </div>
+  </div>
 
   <div class="container">
     <div class="header">
@@ -448,7 +349,7 @@
         <div class="guide-steps">
           <div class="guide-step">
             <span class="step-badge">1</span>
-            <span>Fill in your contact details and upload your payment transaction proof.</span>
+            <span>Fill in your details and upload your mandatory transaction payment screenshot.</span>
           </div>
           <div class="guide-step">
             <span class="step-badge">2</span>
@@ -475,7 +376,7 @@
           <input type="tel" id="phone" required placeholder="Enter phone number">
         </div>
         <div class="form-group">
-          <label>Payment Proof Screenshot</label>
+          <label>Payment Proof Screenshot (Mandatory)</label>
           <div class="file-dropzone">
             <div class="upload-icon">📸</div>
             <div class="upload-title">Upload Transaction Proof</div>
@@ -508,8 +409,6 @@
 
       <button onclick="closeAdminMode()" class="btn-submit" style="background: #222; margin-top: 16px; border: 1px solid rgba(255,255,255,0.1);">Exit Admin Mode</button>
     </div>
-
-    <div id="status"></div>
   </div>
 
   <script>
@@ -609,4 +508,94 @@
           container.innerHTML = "<p style='text-align:center; color:var(--text-sub); font-size:13px;'>No pending approvals!</p>";
         }
       } catch (e) {
-        container.innerHTML = "<p style='color:#ff1744; font-size:13px;'>Error loading ap
+        container.innerHTML = "<p style='color:#ff1744; font-size:13px;'>Error loading approvals.</p>";
+      }
+    }
+
+    // Approve user and dispatch QR pass email
+    async function approveUser(row, name) {
+      if (!confirm("Approve pass for " + name + " and send QR email?")) return;
+      try {
+        const res = await fetch(WEB_APP_URL + "?action=approvePass&row=" + row);
+        const data = await res.json();
+        if (data.result === "success") {
+          alert("✅ Approved! QR Pass emailed to " + name);
+          fetchPendingApprovals();
+        } else { throw new Error(); }
+      } catch (e) {
+        alert("Failed to approve pass.");
+      }
+    }
+
+    // Gate Scanner
+    function startScanner() {
+      html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: { width: 250, height: 250 } });
+      html5QrcodeScanner.render(async function(decodedText) {
+        try {
+          const res = await (await fetch(WEB_APP_URL + "?passId=" + encodeURIComponent(decodedText))).json();
+          if (res.result === "checked_in") {
+            alert("✅ VALID PASS: " + res.name + " Checked In!");
+          } else {
+            alert("⚠️ INVALID OR ALREADY USED PASS");
+          }
+        } catch (e) { alert("Verification error."); }
+      });
+    }
+
+    // File Name Preview (Mandatory Validation Check)
+    const fileInput = document.getElementById('paymentScreenshot');
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        document.getElementById('fileNamePreview').innerText = "Selected: " + fileInput.files[0].name;
+        document.getElementById('fileNamePreview').style.color = "var(--success-green)";
+      }
+    });
+
+    // Handle Form Upload with 15-Second Cinematic Popup
+    document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert("⚠️ Payment screenshot is mandatory!");
+        return;
+      }
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      document.getElementById('btnText').innerText = "Submitting...";
+
+      const reader = new FileReader();
+      reader.onload = async function() {
+        const payload = {
+          fullName: document.getElementById('fullName').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          paymentScreenshotBase64: reader.result
+        };
+        try {
+          const res = await (await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) })).json();
+          if (res.result === "success") {
+            // Trigger 15-Second Cinematic Popup
+            const popup = document.getElementById('statementPopup');
+            popup.style.display = 'flex';
+            
+            setTimeout(() => {
+              popup.style.display = 'none';
+            }, 15000);
+
+            document.getElementById('registrationForm').reset();
+            document.getElementById('fileNamePreview').innerText = "Tap or drag image screenshot here";
+            document.getElementById('fileNamePreview').style.color = "var(--text-sub)";
+          } else { throw new Error(res.error); }
+        } catch (err) {
+          alert("⚠️ Error: " + err.message);
+        } finally {
+          submitBtn.disabled = false;
+          document.getElementById('btnText').innerText = "Submit Registration ➔";
+        }
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    });
+  </script>
+</body>
+</html>
