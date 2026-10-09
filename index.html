@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Halloween Registration</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; background-color: #121212; color: #fff; }
+    h2 { color: #ff7518; text-align: center; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; border-radius: 5px; border: 1px solid #333; background: #222; color: #fff; }
+    button { width: 100%; margin-top: 20px; padding: 12px; background: #ff7518; color: #fff; border: none; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; }
+    #status { margin-top: 15px; text-align: center; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h2>🎃 Halloween Registration</h2>
+
+  <form id="registrationForm">
+    <label>Full Name</label>
+    <input type="text" id="fullName" required placeholder="Enter full name">
+
+    <label>Email Address</label>
+    <input type="email" id="email" required placeholder="Enter email">
+
+    <label>Phone Number</label>
+    <input type="tel" id="phone" required placeholder="Enter phone number">
+
+    <label>Payment Screenshot</label>
+    <input type="file" id="paymentScreenshot" accept="image/*" required>
+
+    <button type="submit" id="submitBtn">Register Now</button>
+  </form>
+
+  <div id="status"></div>
+
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyXJwQnXWyo377_iKM5aTtdipUSWd2R6SuGHCXCqYAiHrHcaoJOrcmEP-GUKkEgxsD4gQ/exec";
+
+    document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById('submitBtn');
+      const statusDiv = document.getElementById('status');
+
+      submitBtn.disabled = true;
+      statusDiv.innerText = "Submitting registration...";
+
+      const fileInput = document.getElementById('paymentScreenshot').files[0];
+      const
