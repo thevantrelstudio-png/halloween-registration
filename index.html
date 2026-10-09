@@ -233,11 +233,12 @@
 
     /* Admin Control Hub Elements */
     #adminPanel { display: none; }
-    .admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+    .admin-tabs { display: flex; gap: 6px; margin-bottom: 20px; }
     .tab-btn {
-      flex: 1; padding: 12px; background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
-      color: var(--text-sub); font-size: 12px; font-weight: 800; cursor: pointer; transition: all 0.2s ease;
+      flex: 1; padding: 10px 4px; background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px;
+      color: var(--text-sub); font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.2s ease;
+      text-align: center;
     }
     .tab-btn.active {
       background: rgba(255, 107, 0, 0.2); border-color: var(--accent-orange); color: #fff; box-shadow: 0 0 15px rgba(255, 107, 0, 0.2);
@@ -393,8 +394,9 @@
     <!-- Admin Control Hub View -->
     <div id="adminPanel">
       <div class="admin-tabs">
-        <button class="tab-btn active" id="tabPendingBtn" onclick="switchAdminTab('pending')">📋 Approvals (<span id="pendingCount">0</span>)</button>
-        <button class="tab-btn" id="tabScannerBtn" onclick="switchAdminTab('scanner')">📸 Gate Scanner</button>
+        <button class="tab-btn active" id="tabPendingBtn" onclick="switchAdminTab('pending')">📋 Pending (<span id="pendingCount">0</span>)</button>
+        <button class="tab-btn" id="tabApprovedBtn" onclick="switchAdminTab('approved')">✅ Approved</button>
+        <button class="tab-btn" id="tabScannerBtn" onclick="switchAdminTab('scanner')">📸 Scanner</button>
       </div>
 
       <!-- Tab 1: Pending Approvals List -->
@@ -402,7 +404,12 @@
         <div id="pendingListContainer">Loading pending submissions...</div>
       </div>
 
-      <!-- Tab 2: Gate QR Scanner -->
+      <!-- Tab 2: Approved Registrations List -->
+      <div id="tabApprovedView" style="display:none;">
+        <div id="approvedListContainer">Loading approved passes...</div>
+      </div>
+
+      <!-- Tab 3: Gate QR Scanner -->
       <div id="tabScannerView" style="display:none;">
         <div id="reader"></div>
       </div>
@@ -426,8 +433,11 @@
       const now = new Date().getTime();
       const diff = eventDate - now;
 
+      const timerEl = document.getElementById("countdownTimer");
+      if (!timerEl) return;
+
       if (diff <= 0) {
-        document.getElementById("countdownTimer").innerText = "Event Live Now!";
+        timerEl.innerText = "Event Live Now!";
         return;
       }
 
@@ -436,7 +446,7 @@
       const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const secs = Math.floor((diff % (1000 * 60)) / 1000);
 
-      document.getElementById("countdownTimer").innerText = `${days}d ${hours}h ${mins}m ${secs}s`;
+      timerEl.innerText = `${days}d ${hours}h ${mins}m ${secs}s`;
     }
     setInterval(updateCountdown, 1000);
     updateCountdown();
@@ -456,7 +466,10 @@
     }
 
     function closeAdminMode() {
-      if (html5QrcodeScanner) html5QrcodeScanner.clear();
+      if (html5QrcodeScanner) {
+        html5QrcodeScanner.clear().catch(e => console.log(e));
+        html5QrcodeScanner = null;
+      }
       document.getElementById('adminPanel').style.display = 'none';
       document.getElementById('userRegistrationView').style.display = 'block';
       document.getElementById('eventMetaCard').style.display = 'grid';
@@ -465,18 +478,38 @@
     }
 
     function switchAdminTab(tab) {
+      const pendingView = document.getElementById('tabPendingView');
+      const approvedView = document.getElementById('tabApprovedView');
+      const scannerView = document.getElementById('tabScannerView');
+      
+      const pendingBtn = document.getElementById('tabPendingBtn');
+      const approvedBtn = document.getElementById('tabApprovedBtn');
+      const scannerBtn = document.getElementById('tabScannerBtn');
+
+      pendingView.style.display = 'none';
+      approvedView.style.display = 'none';
+      scannerView.style.display = 'none';
+      
+      pendingBtn.classList.remove('active');
+      approvedBtn.classList.remove('active');
+      scannerBtn.classList.remove('active');
+
+      if (html5QrcodeScanner) {
+        html5QrcodeScanner.clear().catch(e => console.log(e));
+        html5QrcodeScanner = null;
+      }
+
       if (tab === 'pending') {
-        document.getElementById('tabPendingView').style.display = 'block';
-        document.getElementById('tabScannerView').style.display = 'none';
-        document.getElementById('tabPendingBtn').classList.add('active');
-        document.getElementById('tabScannerBtn').classList.remove('active');
-        if (html5QrcodeScanner) html5QrcodeScanner.clear();
+        pendingView.style.display = 'block';
+        pendingBtn.classList.add('active');
         fetchPendingApprovals();
-      } else {
-        document.getElementById('tabPendingView').style.display = 'none';
-        document.getElementById('tabScannerView').style.display = 'block';
-        document.getElementById('tabScannerBtn').classList.add('active');
-        document.getElementById('tabPendingBtn').classList.remove('active');
+      } else if (tab === 'approved') {
+        approvedView.style.display = 'block';
+        approvedBtn.classList.add('active');
+        fetchApprovedPasses();
+      } else if (tab === 'scanner') {
+        scannerView.style.display = 'block';
+        scannerBtn.classList.add('active');
         startScanner();
       }
     }
@@ -509,6 +542,31 @@
         }
       } catch (e) {
         container.innerHTML = "<p style='color:#ff1744; font-size:13px;'>Error loading approvals.</p>";
+      }
+    }
+
+    // Fetch approved registrations from Google Sheets
+    async function fetchApprovedPasses() {
+      const container = document.getElementById('approvedListContainer');
+      container.innerHTML = "Fetching approved passes...";
+      try {
+        const res = await fetch(WEB_APP_URL + "?action=getApproved");
+        const data = await res.json();
+        if (data.result === "success" && data.approved.length > 0) {
+          container.innerHTML = data.approved.map(item => `
+            <div class="pending-card">
+              <div class="pending-info">
+                <b>${item.name}</b> (${item.passId})<br>
+                ✉️ ${item.email} | 📞 ${item.phone}<br>
+                Status: <span style="color:var(--success-green); font-weight:700;">${item.status}</span>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = "<p style='text-align:center; color:var(--text-sub); font-size:13px;'>No approved passes yet!</p>";
+        }
+      } catch (e) {
+        container.innerHTML = "<p style='color:#ff1744; font-size:13px;'>Error loading approved passes.</p>";
       }
     }
 
