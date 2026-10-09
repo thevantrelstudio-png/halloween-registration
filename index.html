@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Halloween Night '26 | VIP Registration</title>
+  <title>Halloween Night '26 | VIP Registration & Door Check-In</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- html5-qrcode scanner library -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <style>
     :root {
       --bg-dark: #0a0a0c;
       --card-bg: rgba(22, 20, 28, 0.75);
       --accent-orange: #ff6b00;
-      --accent-glow: #ff8800;
       --text-main: #f8f9fa;
       --text-sub: #a0a0ab;
       --border-color: rgba(255, 107, 0, 0.25);
@@ -51,7 +52,7 @@
       position: relative; z-index: 1;
     }
 
-    .header { text-align: center; margin-bottom: 24px; }
+    .header { text-align: center; margin-bottom: 24px; position: relative; }
 
     .badge {
       display: inline-flex; align-items: center; gap: 6px;
@@ -62,6 +63,15 @@
       font-size: 11px; font-weight: 700;
       letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px;
     }
+
+    .admin-toggle-btn {
+      position: absolute; right: 0; top: 0;
+      background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-sub); border-radius: 8px; padding: 4px 8px; font-size: 11px;
+      cursor: pointer; font-weight: 600; transition: all 0.2s;
+    }
+
+    .admin-toggle-btn:hover { color: #fff; border-color: var(--accent-orange); }
 
     .header h1 {
       font-size: 26px; font-weight: 800;
@@ -76,8 +86,7 @@
     .procedure-box {
       background: rgba(255, 107, 0, 0.05);
       border: 1px solid rgba(255, 107, 0, 0.2);
-      border-radius: 16px; padding: 16px;
-      margin-bottom: 24px;
+      border-radius: 16px; padding: 16px; margin-bottom: 24px;
     }
 
     .procedure-title {
@@ -101,7 +110,7 @@
 
     label { display: block; font-size: 12px; font-weight: 600; color: #d1d1d6; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-    input[type="text"], input[type="email"], input[type="tel"] {
+    input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
       width: 100%; padding: 12px 14px;
       background: var(--input-bg);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -120,9 +129,7 @@
     .file-dropzone input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
     .upload-title { font-size: 13px; font-weight: 600; color: var(--text-main); }
-
     .upload-sub { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
-
     .file-name-preview { margin-top: 8px; font-size: 12px; color: var(--accent-orange); font-weight: 600; }
 
     .btn-submit {
@@ -130,5 +137,210 @@
       background: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%);
       border: none; border-radius: 12px; color: #fff; font-size: 15px; font-weight: 700;
       cursor: pointer; box-shadow: 0 10px 25px rgba(255, 107, 0, 0.35); transition: all 0.25s ease;
-      display: flex; justify-content: center; align-items: center; gap: 8
-      
+      display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px;
+    }
+
+    .btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(255, 107, 0, 0.5); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; background: #444; box-shadow: none; }
+
+    .spinner { width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 0.8s linear infinite; display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #status { margin-top: 16px; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 600; text-align: center; display: none; }
+    #status.success { display: block; background: rgba(0, 230, 118, 0.12); border: 1px solid rgba(0, 230, 118, 0.4); color: #00e676; }
+    #status.error { display: block; background: rgba(255, 23, 68, 0.12); border: 1px solid rgba(255, 23, 68, 0.4); color: #ff1744; }
+
+    /* Admin Scanner View */
+    #adminPanel { display: none; margin-top: 20px; }
+    #reader { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow-1"></div>
+
+  <div class="container">
+    <div class="header">
+      <button class="admin-toggle-btn" id="adminToggleBtn" onclick="openAdminPrompt()">⚙️ Admin</button>
+      <div class="badge">🎃 Event Portal</div>
+      <h1 id="portalTitle">Halloween Night Pass</h1>
+      <p id="portalSub">Register below to receive your digital QR event pass.</p>
+    </div>
+
+    <!-- Registration Section -->
+    <div id="userRegistrationView">
+      <div class="procedure-box">
+        <div class="procedure-title">📌 Registration Procedure</div>
+        <ul class="steps-list">
+          <li class="step-item"><span class="step-num">1</span><span>Submit details and upload payment screenshot.</span></li>
+          <li class="step-item"><span class="step-num">2</span><span>Admin verifies payment screenshot in real-time.</span></li>
+          <li class="step-item"><span class="step-num">3</span><span>Entry ticket with encrypted QR Code is emailed upon approval.</span></li>
+        </ul>
+      </div>
+
+      <form id="registrationForm">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" required placeholder="Enter full name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" required placeholder="Enter email address">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" required placeholder="Enter phone number">
+        </div>
+        <div class="form-group">
+          <label>Payment Screenshot</label>
+          <div class="file-dropzone">
+            <div class="upload-title">📸 Select Payment Proof</div>
+            <div class="upload-sub">Tap to select transaction screenshot</div>
+            <div class="file-name-preview" id="fileNamePreview"></div>
+            <input type="file" id="paymentScreenshot" accept="image/*" required>
+          </div>
+        </div>
+        <button type="submit" id="submitBtn" class="btn-submit">
+          <div class="spinner" id="spinner"></div>
+          <span id="btnText">Submit Registration ➔</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Admin QR Scanner View -->
+    <div id="adminPanel">
+      <div class="procedure-box">
+        <div class="procedure-title">🔐 Gate Check-In Mode</div>
+        <p style="font-size: 12px; color: var(--text-sub);">Point tablet camera at attendee's QR Pass to verify and check in.</p>
+      </div>
+      <div id="reader"></div>
+      <button onclick="closeAdminMode()" class="btn-submit" style="background: #333; margin-top: 15px;">Exit Admin Mode</button>
+    </div>
+
+    <div id="status"></div>
+  </div>
+
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyXJwQnXWyo377_iKM5aTtdipUSWd2R6SuGHCXCqYAiHrHcaoJOrcmEP-GUKkEgxsD4gQ/exec";
+    
+    // 6-DIGIT NUMERICAL ADMIN PASSCODE
+    const ADMIN_PIN = "849204"; 
+
+    let html5QrcodeScanner = null;
+
+    function openAdminPrompt() {
+      const inputPin = prompt("Enter 6-digit Admin Passcode:");
+      if (inputPin === ADMIN_PIN) {
+        document.getElementById('userRegistrationView').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        document.getElementById('portalTitle').innerText = 'Door Check-In';
+        document.getElementById('portalSub').innerText = 'Scan participant passes at event door.';
+        startScanner();
+      } else if (inputPin !== null) {
+        alert("Incorrect passcode!");
+      }
+    }
+
+    function closeAdminMode() {
+      if (html5QrcodeScanner) {
+        html5QrcodeScanner.clear();
+      }
+      document.getElementById('adminPanel').style.display = 'none';
+      document.getElementById('userRegistrationView').style.display = 'block';
+      document.getElementById('portalTitle').innerText = 'Halloween Night Pass';
+      document.getElementById('portalSub').innerText = 'Register below to receive your digital QR event pass.';
+    }
+
+    function startScanner() {
+      html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: { width: 250, height: 250 } });
+      html5QrcodeScanner.render(onScanSuccess);
+    }
+
+    async function onScanSuccess(decodedText) {
+      const statusDiv = document.getElementById('status');
+      statusDiv.className = "";
+      statusDiv.style.display = "block";
+      statusDiv.innerText = "Verifying Pass ID: " + decodedText + "...";
+
+      try {
+        const response = await fetch(WEB_APP_URL + "?passId=" + encodeURIComponent(decodedText));
+        const res = await response.json();
+        if (res.result === "checked_in") {
+          statusDiv.className = "success";
+          statusDiv.innerText = "✅ VALID PASS: " + res.name + " Checked In!";
+        } else {
+          statusDiv.className = "error";
+          statusDiv.innerText = "⚠️ INVALID / ALREADY USED PASS";
+        }
+      } catch (e) {
+        statusDiv.className = "error";
+        statusDiv.innerText = "Error contacting server.";
+      }
+    }
+
+    // Handle Form Upload
+    const fileInput = document.getElementById('paymentScreenshot');
+    const fileNamePreview = document.getElementById('fileNamePreview');
+
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files.length > 0) {
+        fileNamePreview.innerText = "Selected: " + fileInput.files[0].name;
+      } else {
+        fileNamePreview.innerText = "";
+      }
+    });
+
+    document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+      const spinner = document.getElementById('spinner');
+      const statusDiv = document.getElementById('status');
+
+      statusDiv.className = "";
+      statusDiv.style.display = "none";
+      submitBtn.disabled = true;
+      spinner.style.display = "block";
+      btnText.innerText = "Submitting...";
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = async function() {
+        const payload = {
+          fullName: document.getElementById('fullName').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          paymentScreenshotBase64: reader.result
+        };
+
+        try {
+          const response = await fetch(WEB_APP_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+          });
+          const result = await response.json();
+
+          if (result.result === "success") {
+            statusDiv.className = "success";
+            statusDiv.innerText = "🎉 Submitted! Pass ID: " + result.passId + ". Your QR pass will be emailed once approved.";
+            document.getElementById('registrationForm').reset();
+            fileNamePreview.innerText = "";
+          } else {
+            throw new Error(result.error || "Submission failed");
+          }
+        } catch (err) {
+          statusDiv.className = "error";
+          statusDiv.innerText = "⚠️ Error: " + err.message;
+        } finally {
+          submitBtn.disabled = false;
+          spinner.style.display = "none";
+          btnText.innerText = "Submit Registration ➔";
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>
