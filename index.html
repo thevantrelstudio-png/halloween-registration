@@ -7,7 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <!-- html5-qrcode library for live camera QR scanning -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <style>
     :root {
@@ -26,191 +25,122 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 32px 16px;
-      position: relative;
-      overflow-x: hidden;
+      background-color: var(--bg-dark); color: var(--text-main);
+      min-height: 100vh; display: flex; justify-content: center; align-items: center;
+      padding: 32px 16px; position: relative; overflow-x: hidden;
     }
 
-    /* Ambient Dynamic Mesh Glows */
     .bg-glow-1 {
       position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(255,107,0,0.22) 0%, rgba(0,0,0,0) 70%);
+      width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,107,0,0.22) 0%, rgba(0,0,0,0) 70%);
       pointer-events: none; filter: blur(60px); z-index: 0;
     }
 
     .bg-glow-2 {
       position: fixed; bottom: -180px; right: -80px;
-      width: 550px; height: 550px;
-      background: radial-gradient(circle, rgba(138,43,226,0.18) 0%, rgba(0,0,0,0) 70%);
+      width: 550px; height: 550px; background: radial-gradient(circle, rgba(138,43,226,0.18) 0%, rgba(0,0,0,0) 70%);
       pointer-events: none; filter: blur(70px); z-index: 0;
     }
 
     .container {
-      width: 100%;
-      max-width: 520px;
-      background: var(--card-bg);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--border-color);
-      border-radius: 28px;
-      padding: 32px 24px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(255, 107, 0, 0.15);
-      position: relative;
-      z-index: 1;
+      width: 100%; max-width: 520px; background: var(--card-bg);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border-color); border-radius: 28px;
+      padding: 32px 24px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(255, 107, 0, 0.15);
+      position: relative; z-index: 1;
     }
 
     .header { text-align: center; margin-bottom: 24px; position: relative; }
 
     .admin-toggle-btn {
       position: absolute; right: 0; top: 0;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--text-sub);
-      border-radius: 10px;
-      padding: 6px 12px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
+      background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-sub); border-radius: 10px; padding: 6px 12px; font-size: 11px; font-weight: 700; cursor: pointer;
       transition: all 0.25s ease;
     }
 
     .admin-toggle-btn:hover {
-      color: #fff;
-      border-color: var(--accent-orange);
-      background: rgba(255, 107, 0, 0.15);
-      box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+      color: #fff; border-color: var(--accent-orange); background: rgba(255, 107, 0, 0.15); box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
     }
 
-    /* Co-Branding Brand Logos Container */
-    .brand-logos {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 16px;
-      margin-top: 8px;
+    /* Elegant Typography Club Names Banner */
+    .brand-names-banner {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      margin-bottom: 14px; margin-top: 6px;
     }
 
-    .club-logo {
-      height: 52px;
-      width: 52px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(255, 107, 0, 0.4);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-      background: #000;
+    .club-title-tag {
+      font-size: 14px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+      background: linear-gradient(135deg, #ffffff 30%, #c0c0d0 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      padding: 6px 14px; background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     }
 
-    .logo-divider {
-      color: var(--accent-orange);
-      font-size: 18px;
-      font-weight: 800;
-      opacity: 0.7;
+    .brand-names-banner .logo-divider {
+      color: var(--accent-orange); font-size: 18px; font-weight: 800; opacity: 0.8;
     }
 
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255, 107, 0, 0.12);
-      border: 1px solid rgba(255, 107, 0, 0.35);
-      color: var(--accent-orange);
-      padding: 5px 14px;
-      border-radius: 50px;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
+      display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 107, 0, 0.12);
+      border: 1px solid rgba(255, 107, 0, 0.35); color: var(--accent-orange); padding: 5px 14px;
+      border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px;
     }
 
     .header h1 {
-      font-size: 28px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
+      font-size: 28px; font-weight: 900; letter-spacing: -0.5px;
       background: linear-gradient(135deg, #ffffff 20%, #ffaa66 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 6px;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px;
     }
 
     .header p { color: var(--text-sub); font-size: 13px; line-height: 1.4; }
 
-    /* Live Event Metadata Card */
     .event-meta-card {
       background: linear-gradient(135deg, rgba(255, 107, 0, 0.08) 0%, rgba(138, 43, 226, 0.08) 100%);
-      border: 1px solid rgba(255, 107, 0, 0.2);
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 24px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      border: 1px solid rgba(255, 107, 0, 0.2); border-radius: 18px; padding: 16px; margin-bottom: 24px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
     }
 
     .meta-item { display: flex; flex-direction: column; gap: 4px; }
     .meta-label { font-size: 10px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; }
     .meta-value { font-size: 13px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 6px; }
 
-    /* Countdown Timer Widget */
     .countdown-box {
-      grid-column: span 2;
-      background: rgba(10, 9, 15, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 4px;
+      grid-column: span 2; background: rgba(10, 9, 15, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; margin-top: 4px;
     }
 
     .countdown-title { font-size: 11px; font-weight: 700; color: var(--accent-orange); }
     .countdown-timer { font-size: 14px; font-weight: 800; color: #fff; }
 
-    /* Instructions Accordion Box */
     .guide-box {
-      background: rgba(15, 14, 22, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 24px;
+      background: rgba(15, 14, 22, 0.7); border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px; padding: 16px; margin-bottom: 24px;
     }
 
     .guide-title {
-      font-size: 12px; font-weight: 800; color: var(--accent-orange);
-      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;
-      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 800; color: var(--accent-orange); text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
     }
 
     .guide-steps { display: flex; flex-direction: column; gap: 10px; }
     .guide-step { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: #d0d0dc; line-height: 1.4; }
     .step-badge {
-      background: rgba(255, 107, 0, 0.2); color: var(--accent-orange); font-weight: 800;
-      font-size: 10px; min-width: 20px; height: 20px; border-radius: 6px;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+      background: rgba(255, 107, 0, 0.2); color: var(--accent-orange); font-weight: 800; font-size: 10px;
+      min-width: 20px; height: 20px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
     }
 
-    /* Input Controls */
     .form-group { margin-bottom: 18px; }
     label { display: block; font-size: 11px; font-weight: 700; color: #c4c4d0; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
 
     input[type="text"], input[type="email"], input[type="tel"] {
       width: 100%; padding: 14px 16px; background: var(--input-bg);
-      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px;
-      color: #fff; font-size: 14px; outline: none; transition: all 0.25s ease;
+      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; color: #fff; font-size: 14px; outline: none; transition: all 0.25s ease;
     }
 
     input:focus { border-color: var(--accent-orange); box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2); background: rgba(15, 14, 22, 0.95); }
 
-    /* Enhanced File Dropzone */
     .file-dropzone {
       border: 2px dashed rgba(255, 107, 0, 0.35); background: rgba(10, 9, 15, 0.6);
       border-radius: 16px; padding: 22px; text-align: center; cursor: pointer; position: relative; transition: all 0.25s ease;
@@ -221,24 +151,21 @@
     .upload-title { font-size: 13px; font-weight: 700; color: #fff; }
     .upload-sub { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
 
-    /* Main CTA Button */
     .btn-submit {
       width: 100%; padding: 16px; background: linear-gradient(135deg, #ff6b00 0%, #e65c00 100%);
-      border: none; border-radius: 14px; color: #fff; font-size: 15px; font-weight: 800;
-      letter-spacing: 0.5px; cursor: pointer; margin-top: 12px; box-shadow: 0 12px 30px rgba(255, 107, 0, 0.35);
-      transition: all 0.25s ease; display: flex; justify-content: center; align-items: center; gap: 10px;
+      border: none; border-radius: 14px; color: #fff; font-size: 15px; font-weight: 800; letter-spacing: 0.5px;
+      cursor: pointer; margin-top: 12px; box-shadow: 0 12px 30px rgba(255, 107, 0, 0.35); transition: all 0.25s ease;
+      display: flex; justify-content: center; align-items: center; gap: 10px;
     }
     .btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 35px rgba(255, 107, 0, 0.5); }
     .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; background: #333; box-shadow: none; }
 
-    /* Admin Control Hub Elements */
     #adminPanel { display: none; }
-    .admin-tabs { display: flex; gap: 6px; margin-bottom: 20px; }
+    .admin-tabs { display: flex; gap: 4px; margin-bottom: 20px; overflow-x: auto; }
     .tab-btn {
-      flex: 1; padding: 10px 4px; background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px;
-      color: var(--text-sub); font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.2s ease;
-      text-align: center;
+      flex: 1; padding: 10px 2px; background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; color: var(--text-sub);
+      font-size: 10px; font-weight: 800; cursor: pointer; transition: all 0.2s ease; text-align: center; white-space: nowrap;
     }
     .tab-btn.active {
       background: rgba(255, 107, 0, 0.2); border-color: var(--accent-orange); color: #fff; box-shadow: 0 0 15px rgba(255, 107, 0, 0.2);
@@ -252,16 +179,20 @@
     .pending-actions { display: flex; gap: 8px; }
     .btn-view {
       flex: 1; padding: 10px; background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; color: #fff;
-      font-size: 12px; font-weight: 700; text-decoration: none; text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; color: #fff; font-size: 12px; font-weight: 700; text-decoration: none; text-align: center;
     }
     .btn-approve {
-      flex: 1; padding: 10px; background: var(--success-green); border: none;
-      border-radius: 10px; color: #000; font-size: 12px; font-weight: 800; cursor: pointer;
+      flex: 1; padding: 10px; background: var(--success-green); border: none; border-radius: 10px; color: #000; font-size: 12px; font-weight: 800; cursor: pointer;
     }
-    #reader { width: 100%; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); background: #000; }
+    #reader { width: 100%; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); background: #000; margin-bottom: 12px; }
 
-    /* 15-Second Cinematic Popup Overlay */
+    .file-scan-btn {
+      width: 100%; padding: 12px; background: rgba(255, 107, 0, 0.15);
+      border: 1px dashed var(--accent-orange); border-radius: 12px; color: #fff;
+      font-size: 13px; font-weight: 700; text-align: center; cursor: pointer; position: relative;
+    }
+    .file-scan-btn input[type="file"] { position: absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer; }
+
     #statementPopup {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(5, 5, 8, 0.85); backdrop-filter: blur(12px);
@@ -280,16 +211,9 @@
     .popup-icon { font-size: 42px; margin-bottom: 12px; }
     .popup-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 10px; }
     .popup-desc { font-size: 13px; color: var(--text-sub); line-height: 1.5; margin-bottom: 20px; }
-    .popup-timer-bar {
-      width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;
-    }
-    .popup-timer-progress {
-      width: 100%; height: 100%; background: var(--accent-orange); animation: countdownBar 15s linear forwards;
-    }
-    @keyframes countdownBar {
-      from { width: 100%; }
-      to { width: 0%; }
-    }
+    .popup-timer-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+    .popup-timer-progress { width: 100%; height: 100%; background: var(--accent-orange); animation: countdownBar 15s linear forwards; }
+    @keyframes countdownBar { from { width: 100%; } to { width: 0%; } }
   </style>
 </head>
 <body>
@@ -297,7 +221,6 @@
   <div class="bg-glow-1"></div>
   <div class="bg-glow-2"></div>
 
-  <!-- 15-Second Cinematic Popup Modal -->
   <div id="statementPopup">
     <div class="popup-card">
       <div class="popup-icon">🎃</div>
@@ -315,11 +238,11 @@
     <div class="header">
       <button class="admin-toggle-btn" onclick="openAdminPrompt()">⚙️ Admin Mode</button>
       
-      <!-- Brand Logos Bar -->
-      <div class="brand-logos">
-        <img src="euro-club-logo.png" alt="Euro Club" class="club-logo">
+      <!-- Elegant Typography Club Names Banner -->
+      <div class="brand-names-banner">
+        <span class="club-title-tag">EURO CLUB</span>
         <span class="logo-divider">×</span>
-        <img src="zenith-club-logo.png" alt="Zenith Club" class="club-logo">
+        <span class="club-title-tag">ZENITH CLUB</span>
       </div>
 
       <div class="badge">🎃 VIP Pass Portal</div>
@@ -327,7 +250,6 @@
       <p id="portalSub">Complete your registration to secure your encrypted event QR pass.</p>
     </div>
 
-    <!-- Live Event Metadata Card -->
     <div class="event-meta-card" id="eventMetaCard">
       <div class="meta-item">
         <span class="meta-label">Location</span>
@@ -343,7 +265,6 @@
       </div>
     </div>
 
-    <!-- Participant Registration View -->
     <div id="userRegistrationView">
       <div class="guide-box">
         <div class="guide-title">⚡ How to Claim Your Pass</div>
@@ -394,24 +315,30 @@
     <!-- Admin Control Hub View -->
     <div id="adminPanel">
       <div class="admin-tabs">
-        <button class="tab-btn active" id="tabPendingBtn" onclick="switchAdminTab('pending')">📋 Pending (<span id="pendingCount">0</span>)</button>
-        <button class="tab-btn" id="tabApprovedBtn" onclick="switchAdminTab('approved')">✅ Approved</button>
+        <button class="tab-btn active" id="tabPendingBtn" onclick="switchAdminTab('pending')">📋 Pending</button>
+        <button class="tab-btn" id="tabApprovedBtn" onclick="switchAdminTab('approved')">📁 Approved</button>
+        <button class="tab-btn" id="tabCheckedInBtn" onclick="switchAdminTab('checkedin')">🔴 Scanned</button>
         <button class="tab-btn" id="tabScannerBtn" onclick="switchAdminTab('scanner')">📸 Scanner</button>
       </div>
 
-      <!-- Tab 1: Pending Approvals List -->
       <div id="tabPendingView">
         <div id="pendingListContainer">Loading pending submissions...</div>
       </div>
 
-      <!-- Tab 2: Approved Registrations List -->
       <div id="tabApprovedView" style="display:none;">
-        <div id="approvedListContainer">Loading approved passes...</div>
+        <div id="approvedListContainer">Loading approved registers...</div>
       </div>
 
-      <!-- Tab 3: Gate QR Scanner -->
+      <div id="tabCheckedInView" style="display:none;">
+        <div id="checkedInListContainer">Loading scanned participants...</div>
+      </div>
+
       <div id="tabScannerView" style="display:none;">
         <div id="reader"></div>
+        <div class="file-scan-btn">
+          📂 Scan QR from Device File / Gallery
+          <input type="file" id="qrFilezeniu" accept="image/*" onchange="scanQRFromFile(this)">
+        </div>
       </div>
 
       <button onclick="closeAdminMode()" class="btn-submit" style="background: #222; margin-top: 16px; border: 1px solid rgba(255,255,255,0.1);">Exit Admin Mode</button>
@@ -419,15 +346,11 @@
   </div>
 
   <script>
-    // Live Apps Script Web App URL
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxYInwIdrT0pMFlAmEgDLR0Ao8MmwxyDGNMk60eOekyCc6ZZnEP4HkCjCPZNgZ0Pi_6aA/exec";
-    
-    // 6-digit passcode to unlock Admin Mode
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwmDhbGbljPF4V4m9aL1lqPGnoaT73U1tqNQuLNGQFGq9UUVY0hs_ZGjaUf3Wh_Yn9M/exec";
     const ADMIN_PIN = "849204";
 
     let html5QrcodeScanner = null;
 
-    // Countdown Timer Logic
     function updateCountdown() {
       const eventDate = new Date("October 31, 2026 17:00:00").getTime();
       const now = new Date().getTime();
@@ -478,21 +401,11 @@
     }
 
     function switchAdminTab(tab) {
-      const pendingView = document.getElementById('tabPendingView');
-      const approvedView = document.getElementById('tabApprovedView');
-      const scannerView = document.getElementById('tabScannerView');
-      
-      const pendingBtn = document.getElementById('tabPendingBtn');
-      const approvedBtn = document.getElementById('tabApprovedBtn');
-      const scannerBtn = document.getElementById('tabScannerBtn');
+      const views = ['tabPendingView', 'tabApprovedView', 'tabCheckedInView', 'tabScannerView'];
+      const buttons = ['tabPendingBtn', 'tabApprovedBtn', 'tabCheckedInBtn', 'tabScannerBtn'];
 
-      pendingView.style.display = 'none';
-      approvedView.style.display = 'none';
-      scannerView.style.display = 'none';
-      
-      pendingBtn.classList.remove('active');
-      approvedBtn.classList.remove('active');
-      scannerBtn.classList.remove('active');
+      views.forEach(v => document.getElementById(v).style.display = 'none');
+      buttons.forEach(b => document.getElementById(b).classList.remove('active'));
 
       if (html5QrcodeScanner) {
         html5QrcodeScanner.clear().catch(e => console.log(e));
@@ -500,21 +413,24 @@
       }
 
       if (tab === 'pending') {
-        pendingView.style.display = 'block';
-        pendingBtn.classList.add('active');
+        document.getElementById('tabPendingView').style.display = 'block';
+        document.getElementById('tabPendingBtn').classList.add('active');
         fetchPendingApprovals();
       } else if (tab === 'approved') {
-        approvedView.style.display = 'block';
-        approvedBtn.classList.add('active');
-        fetchApprovedPasses();
+        document.getElementById('tabApprovedView').style.display = 'block';
+        document.getElementById('tabApprovedBtn').classList.add('active');
+        fetchApprovedRegisters();
+      } else if (tab === 'checkedin') {
+        document.getElementById('tabCheckedInView').style.display = 'block';
+        document.getElementById('tabCheckedInBtn').classList.add('active');
+        fetchCheckedInParticipants();
       } else if (tab === 'scanner') {
-        scannerView.style.display = 'block';
-        scannerBtn.classList.add('active');
+        document.getElementById('tabScannerView').style.display = 'block';
+        document.getElementById('tabScannerBtn').classList.add('active');
         startScanner();
       }
     }
 
-    // Fetch pending registrations from Google Sheets
     async function fetchPendingApprovals() {
       const container = document.getElementById('pendingListContainer');
       container.innerHTML = "Fetching pending registrations...";
@@ -522,22 +438,19 @@
         const res = await fetch(WEB_APP_URL + "?action=getPending");
         const data = await res.json();
         if (data.result === "success" && data.pending.length > 0) {
-          document.getElementById('pendingCount').innerText = data.pending.length;
           container.innerHTML = data.pending.map(item => `
             <div class="pending-card">
               <div class="pending-info">
                 <b>${item.name}</b> (${item.passId})<br>
-                ✉️ ${item.email}<br>
-                📞 ${item.phone}
+                ✉️ ${item.email}<br>📞 ${item.phone}
               </div>
               <div class="pending-actions">
                 <a href="${item.screenshotUrl}" target="_blank" class="btn-view">View Proof 🖼️</a>
-                <button onclick="approveUser(${item.row}, '${item.name}')" class="btn-approve">Approve Pass ✅</button>
+                <button onclick="approveUser(${item.row}, '${item.name}')" class="btn-approve">Approve ✅</button>
               </div>
             </div>
           `).join('');
         } else {
-          document.getElementById('pendingCount').innerText = "0";
           container.innerHTML = "<p style='text-align:center; color:var(--text-sub); font-size:13px;'>No pending approvals!</p>";
         }
       } catch (e) {
@@ -545,10 +458,9 @@
       }
     }
 
-    // Fetch approved registrations from Google Sheets
-    async function fetchApprovedPasses() {
+    async function fetchApprovedRegisters() {
       const container = document.getElementById('approvedListContainer');
-      container.innerHTML = "Fetching approved passes...";
+      container.innerHTML = "Fetching approved registers...";
       try {
         const res = await fetch(WEB_APP_URL + "?action=getApproved");
         const data = await res.json();
@@ -563,14 +475,37 @@
             </div>
           `).join('');
         } else {
-          container.innerHTML = "<p style='text-align:center; color:var(--text-sub); font-size:13px;'>No approved passes yet!</p>";
+          container.innerHTML = "<p style='text-align:center; color:var(--text-sub); font-size:13px;'>No approved registers found yet!</p>";
         }
       } catch (e) {
-        container.innerHTML = "<p style='color:#ff1744; font-size:13px;'>Error loading approved passes.</p>";
+        container.innerHTML = "<p style='color:#ff1744; font-size:13px;'>Error loading approved registers.</p>";
       }
     }
 
-    // Approve user and dispatch QR pass email
+    async function fetchCheckedInParticipants() {
+      const container = document.getElementById('checkedInListContainer');
+      container.innerHTML = "Fetching scanned participants...";
+      try {
+        const res = await fetch(WEB_APP_URL + "?action=getCheckedIn");
+        const data = await res.json();
+        if (data.result === "success" && data.checkedIn.length > 0) {
+          container.innerHTML = data.checkedIn.map(item => `
+            <div class="pending-card">
+              <div class="pending-info">
+                <b>${item.name}</b> (${item.passId})<br>
+                ✉️ ${item.email} | 📞 ${item.phone}<br>
+                Status: <span style="color:var(--accent-orange); font-weight:700;">Checked In 🔴</span>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = "<p style='text-align:center; color:var(--text-sub); font-size:13px;'>No participants checked in yet!</p>";
+        }
+      } catch (e) {
+        container.innerHTML = "<p style='color:#ff1744; font-size:13px;'>Error loading checked-in list.</p>";
+      }
+    }
+
     async function approveUser(row, name) {
       if (!confirm("Approve pass for " + name + " and send QR email?")) return;
       try {
@@ -585,22 +520,49 @@
       }
     }
 
-    // Gate Scanner
     function startScanner() {
       html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: { width: 250, height: 250 } });
       html5QrcodeScanner.render(async function(decodedText) {
-        try {
-          const res = await (await fetch(WEB_APP_URL + "?passId=" + encodeURIComponent(decodedText))).json();
-          if (res.result === "checked_in") {
-            alert("✅ VALID PASS: " + res.name + " Checked In!");
-          } else {
-            alert("⚠️ INVALID OR ALREADY USED PASS");
-          }
-        } catch (e) { alert("Verification error."); }
+        verifyPassId(decodedText);
       });
     }
 
-    // File Name Preview (Mandatory Validation Check)
+    async function scanQRFromFile(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const html5QrCode = new Html5Qrcode("reader");
+        try {
+          const decodedText = await html5QrCode.scanFile(file, true);
+          verifyPassId(decodedText);
+        } catch (err) {
+          alert("⚠️ Could not detect a valid QR code in this image.");
+        }
+      }
+    }
+
+    async function verifyPassId(passId) {
+      try {
+        const res = await (await fetch(WEB_APP_URL + "?passId=" + encodeURIComponent(passId))).json();
+        
+        if (res.result === "checked_in") {
+          alert("✅ VALID PASS: " + res.name + " Checked In Successfully!");
+        } else if (res.result === "already_checked_in") {
+          const pin = prompt("⚠️ ALREADY SCANNED! This QR code was already used.\nEnter Secure Admin Pass Key to override/view:");
+          if (pin === ADMIN_PIN) {
+            alert("🔓 Access Granted (Override): " + res.name + " was already checked in.");
+          } else if (pin !== null) {
+            alert("❌ Incorrect Pass Key! Access Denied.");
+          }
+        } else if (res.result === "not_approved") {
+          alert("⚠️ WARNING: Pass ID found but payment is still Pending approval!");
+        } else {
+          alert("❌ INVALID PASS ID");
+        }
+      } catch (e) {
+        alert("Verification network error.");
+      }
+    }
+
     const fileInput = document.getElementById('paymentScreenshot');
     fileInput.addEventListener('change', () => {
       if (fileInput.files.length > 0) {
@@ -609,7 +571,6 @@
       }
     });
 
-    // Handle Form Upload with 15-Second Cinematic Popup
     document.getElementById('registrationForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
@@ -633,13 +594,10 @@
         try {
           const res = await (await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) })).json();
           if (res.result === "success") {
-            // Trigger 15-Second Cinematic Popup
             const popup = document.getElementById('statementPopup');
             popup.style.display = 'flex';
             
-            setTimeout(() => {
-              popup.style.display = 'none';
-            }, 15000);
+            setTimeout(() => { popup.style.display = 'none'; }, 15000);
 
             document.getElementById('registrationForm').reset();
             document.getElementById('fileNamePreview').innerText = "Tap or drag image screenshot here";
