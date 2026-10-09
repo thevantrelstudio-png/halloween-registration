@@ -665,9 +665,9 @@
       try {
         const res = await (await fetch(WEB_APP_URL + "?action=resetDatabase")).json();
         if (res.result === "success") {
-          document.getElementById('resetModal').style.display = 'none';
-          alert("✅ Database successfully reset and backup sent to thevantrelstudio@gmail.com!");
-          location.reload();
+              document.getElementById('resetModal').style.display = 'none';
+    alert("✅ Database successfully reset and backup sent to thevantrelstudio@gmail.com!");
+    location.reload();
         } else { throw new Error(); }
       } catch (e) {
         alert("⚠️ Error executing reset.");
