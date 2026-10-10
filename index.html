@@ -17,7 +17,7 @@
             --accent-red: #ff3b30;
             --success-green: #30d158;
             --text-main: #ffffff;
-            --text-sub: rgba(255, 255, 255, 0.7);
+            --text-sub: rgba(255, 255, 255, 0.75);
         }
 
         body {
@@ -27,37 +27,37 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 24px 16px;
             
             /* Afterlife '26 Pinterest Horror Collage Background */
-            background: linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.82)), 
+            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.7)), 
                         url('bg.jpg') center/cover no-repeat fixed;
         }
 
-        /* --- APPLE FROSTED GLASS PANELS --- */
+        /* --- TRUE APPLE LIQUID GLASS WIDGET CARD --- */
         .glass-card {
             width: 100%;
             max-width: 480px;
-            background: rgba(18, 18, 22, 0.58) !important;
-            backdrop-filter: blur(24px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.14) !important;
-            border-radius: 28px !important;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 
-                        inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
-            padding: 32px 28px !important;
+            background: rgba(20, 20, 28, 0.45) !important;
+            backdrop-filter: blur(28px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+            border-radius: 32px !important;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 
+                        inset 0 1.5px 1px rgba(255, 255, 255, 0.3) !important;
+            padding: 32px 24px !important;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .header h1 {
-            font-size: 32px;
+            font-size: 34px;
             font-weight: 800;
-            letter-spacing: 1.5px;
-            background: linear-gradient(135deg, #ffffff 30%, var(--accent-orange));
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ffffff 40%, var(--accent-orange));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
@@ -66,7 +66,112 @@
         .header p {
             font-size: 14px;
             color: var(--text-sub);
-            margin-top: 6px;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* --- COUNTDOWN TIMER GLASS WIDGET --- */
+        .countdown-widget {
+            background: rgba(255, 107, 0, 0.12);
+            border: 1px solid rgba(255, 107, 0, 0.35);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .countdown-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--accent-orange);
+            margin-bottom: 10px;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .timer-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .timer-val {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .timer-lbl {
+            font-size: 10px;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* --- REGISTRATION PROCEDURE BOX --- */
+        .procedure-box {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 18px 20px;
+            margin-bottom: 24px;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .procedure-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--accent-orange);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .procedure-steps {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .procedure-steps li {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.4;
+        }
+
+        .procedure-steps li:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-num {
+            background: rgba(255, 107, 0, 0.3);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
         }
 
         .form-group {
@@ -75,25 +180,24 @@
 
         label {
             display: block;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 700;
             color: var(--text-sub);
             margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
         }
 
         /* --- GLASS INPUT FIELDS --- */
         input[type="text"], 
         input[type="tel"], 
         input[type="email"], 
-        input[type="number"], 
-        select {
+        input[type="file"] {
             width: 100%;
-            background: rgba(255, 255, 255, 0.06) !important;
-            backdrop-filter: blur(10px) !important;
-            -webkit-backdrop-filter: blur(10px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
             border-radius: 16px !important;
             color: #ffffff !important;
             padding: 14px 16px !important;
@@ -102,29 +206,32 @@
             transition: all 0.25s ease !important;
         }
 
-        input:focus, select:focus {
-            border-color: rgba(255, 107, 0, 0.8) !important;
-            background: rgba(255, 255, 255, 0.12) !important;
-            box-shadow: 0 0 18px rgba(255, 107, 0, 0.35) !important;
+        input:focus {
+            border-color: rgba(255, 107, 0, 0.9) !important;
+            background: rgba(255, 255, 255, 0.16) !important;
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.4) !important;
         }
 
-        /* --- PAYMENT QR CARD BLOCK --- */
+        /* --- LARGER PAYMENT QR CODE WIDGET --- */
         .qr-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(14px);
+            border-radius: 24px;
+            padding: 24px 16px;
             text-align: center;
             margin-bottom: 24px;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
 
         .qr-card img {
-            width: 180px;
-            height: 180px;
-            border-radius: 12px;
-            margin: 12px 0;
+            width: 250px; /* ENLARGED QR CODE */
+            height: 250px;
+            border-radius: 18px;
+            margin: 14px 0;
             background: #ffffff;
-            padding: 8px;
+            padding: 10px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
         }
 
         .qr-card p {
@@ -132,93 +239,31 @@
             color: var(--text-sub);
         }
 
-        /* --- APPLE LIQUID GLASS BUTTONS --- */
+        /* --- APPLE LIQUID GLASS BUTTON --- */
         button, .btn {
             width: 100%;
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.9), rgba(220, 40, 0, 0.9)) !important;
-            backdrop-filter: blur(12px) !important;
-            -webkit-backdrop-filter: blur(12px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.3) !important;
-            border-radius: 18px !important;
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.95), rgba(220, 30, 0, 0.95)) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.35) !important;
+            border-radius: 20px !important;
             color: #ffffff !important;
             font-weight: 700 !important;
             font-size: 16px !important;
-            letter-spacing: 0.5px !important;
+            letter-spacing: 0.6px !important;
             padding: 16px 24px !important;
             cursor: pointer !important;
-            box-shadow: 0 8px 24px rgba(255, 60, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+            box-shadow: 0 10px 28px rgba(255, 60, 0, 0.4), inset 0 1.5px 1px rgba(255, 255, 255, 0.5) !important;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
         button:hover {
             transform: translateY(-2px) scale(1.01) !important;
-            box-shadow: 0 12px 30px rgba(255, 60, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.6) !important;
+            box-shadow: 0 14px 35px rgba(255, 60, 0, 0.6), inset 0 1.5px 1px rgba(255, 255, 255, 0.7) !important;
         }
 
         button:active {
             transform: translateY(1px) scale(0.98) !important;
-        }
-
-        .btn-cancel {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
-            margin-top: 12px;
-        }
-
-        /* --- EMERGENCY RESET MODAL --- */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .modal-card {
-            background: rgba(25, 25, 30, 0.9);
-            border: 1px solid rgba(255, 59, 48, 0.5);
-            box-shadow: 0 0 35px rgba(255, 59, 48, 0.3);
-            border-radius: 24px;
-            padding: 28px;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .modal-card h2 {
-            color: var(--accent-red);
-            font-size: 20px;
-            margin: 12px 0 8px;
-        }
-
-        .modal-card p {
-            font-size: 13px;
-            color: var(--text-sub);
-            line-height: 1.5;
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 100%;
-            background: var(--accent-red);
-            transition: width 1s linear;
         }
     </style>
 </head>
@@ -228,6 +273,27 @@
         <div class="header">
             <h1>AFTERLIFE '26</h1>
             <p>Euro Club × Zenith Club | Somma, Yendada</p>
+        </div>
+
+        <!-- COUNTDOWN TIMER WIDGET -->
+        <div class="countdown-widget">
+            <div class="countdown-title">⏳ Event Starts In</div>
+            <div class="countdown-timer">
+                <div class="timer-unit"><span class="timer-val" id="days">00</span><span class="timer-lbl">Days</span></div>
+                <div class="timer-unit"><span class="timer-val" id="hours">00</span><span class="timer-lbl">Hours</span></div>
+                <div class="timer-unit"><span class="timer-val" id="mins">00</span><span class="timer-lbl">Mins</span></div>
+                <div class="timer-unit"><span class="timer-val" id="secs">00</span><span class="timer-lbl">Secs</span></div>
+            </div>
+        </div>
+
+        <!-- PROCEDURE BOX -->
+        <div class="procedure-box">
+            <div class="procedure-title">📌 Registration Steps</div>
+            <ul class="procedure-steps">
+                <li><span class="step-num">1</span> Fill in your details (Full Name, Email & WhatsApp).</li>
+                <li><span class="step-num">2</span> Scan the PhonePe QR code below to transfer entry fee.</li>
+                <li><span class="step-num">3</span> Upload payment screenshot as proof & hit Confirm.</li>
+            </ul>
         </div>
 
         <form id="registrationForm">
@@ -246,17 +312,17 @@
                 <input type="tel" id="phone" placeholder="+91 XXXXX XXXXX" required>
             </div>
 
+            <!-- ENLARGED PAYMENT QR CARD -->
             <div class="qr-card">
                 <p><strong>Scan QR to Pay Registration Entry</strong></p>
-                <!-- Place your UPI / PhonePe QR image file path here -->
-                <img src="payment-qr.jpg" alt="Payment QR Code">
-                <p>Upload proof below after completion</p>
+                <img src="payment-qr.jpg" alt="PhonePe Payment QR Code">
+                <p>Upload payment proof below after completion</p>
             </div>
 
             <div class="form-group">
                 <label for="paymentScreenshot">Payment Screenshot</label>
                 <input type="file" id="paymentScreenshot" accept="image/*" required>
-                <p id="fileNamePreview" style="font-size: 12px; margin-top: 6px;"></p>
+                <p id="fileNamePreview" style="font-size: 12px; margin-top: 6px; color: var(--success-green);"></p>
             </div>
 
             <button type="submit" id="submitBtn">
@@ -265,104 +331,21 @@
         </form>
     </div>
 
-    <!-- Emergency Reset Warning Modal -->
-    <div class="modal" id="resetModal">
-        <div class="modal-card">
-            <div style="font-size: 36px;">⚠️</div>
-            <h2>Emergency Database Reset</h2>
-            <p>All active registrations are being backed up and emailed to <strong>thevantrelstudio@gmail.com</strong>. Resetting in <span id="timerCount">20</span> seconds...</p>
-            
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="resetProgress"></div>
-            </div>
-
-            <button type="button" class="btn-cancel" onclick="cancelReset()">Cancel Reset</button>
-        </div>
-    </div>
-
     <script>
-        const WEB_APP_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE"; // Replace with your Web App URL
-        let resetTimer;
+        // COUNTDOWN TIMER SCRIPT (Target: Oct 31, 2026 20:00:00)
+        const eventDate = new Date("October 31, 2026 20:00:00").getTime();
 
-        // File Input Change Preview
-        const fileInput = document.getElementById('paymentScreenshot');
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length > 0) {
-                const preview = document.getElementById('fileNamePreview');
-                preview.innerText = "Selected: " + fileInput.files[0].name;
-                preview.style.color = "var(--success-green)";
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            if (distance > 0) {
+                document.getElementById("days").innerText = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                document.getElementById("hours").innerText = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                document.getElementById("mins").innerText = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                document.getElementById("secs").innerText = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
             }
-        });
-
-        // Form Submission
-        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            if (!fileInput.files || fileInput.files.length === 0) {
-                alert("⚠️ Payment screenshot is mandatory!");
-                return;
-            }
-
-            const submitBtn = document.getElementById('submitBtn');
-            const btnText = document.getElementById('btnText');
-            submitBtn.disabled = true;
-            btnText.innerText = "Submitting...";
-
-            // FileReader logic for sending image to Apps Script
-            const reader = new FileReader();
-            reader.onload = async function() {
-                const payload = {
-                    name: document.getElementById('fullName').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    image: reader.result.split(',')[1],
-                    mimeType: fileInput.files[0].type
-                };
-
-                try {
-                    const res = await fetch(WEB_APP_URL, {
-                        method: 'POST',
-                        body: JSON.stringify(payload)
-                    });
-                    const data = await res.json();
-                    
-                    if (data.result === 'success') {
-                        alert("🎉 Registration successful! See you at Afterlife '26!");
-                        location.reload();
-                    } else {
-                        throw new Error();
-                    }
-                } catch (err) {
-                    alert("⚠️ Registration submission error. Please try again.");
-                    submitBtn.disabled = false;
-                    btnText.innerText = "Confirm & Register";
-                }
-            };
-            reader.readAsDataURL(fileInput.files[0]);
-        });
-
-        // Emergency Reset Modal Execution
-        function cancelReset() {
-            clearInterval(resetTimer);
-            document.getElementById('resetModal').style.display = 'none';
-            alert("Emergency reset cancelled.");
-        }
-
-        async function executeResetDatabase() {
-            try {
-                const res = await (await fetch(WEB_APP_URL + "?action=resetDatabase")).json();
-                if (res.result === "success") {
-                    document.getElementById('resetModal').style.display = 'none';
-                    alert("✅ Database successfully reset and backup sent to thevantrelstudio@gmail.com!");
-                    location.reload();
-                } else {
-                    throw new Error();
-                }
-            } catch (e) {
-                alert("⚠️ Error executing reset.");
-                document.getElementById('resetModal').style.display = 'none';
-            }
-        }
+        }, 1000);
     </script>
 </body>
 </html>
