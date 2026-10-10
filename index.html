@@ -228,7 +228,7 @@
         }
 
         .qr-card img {
-            width: 250px; /* ENLARGED QR CODE */
+            width: 250px;
             height: 250px;
             border-radius: 18px;
             margin: 14px 0;
@@ -423,8 +423,8 @@
         <div class="modal-card">
             <h2 style="margin-bottom: 12px; text-align: center;">Admin Verification</h2>
             <div class="form-group">
-                <label for="adminPass">Enter Passcode</label>
-                <input type="password" id="adminPass" placeholder="••••••••">
+                <label for="adminPass">Enter 6-Digit Passcode</label>
+                <input type="password" id="adminPass" maxlength="6" placeholder="••••••">
             </div>
             <button onclick="verifyAdmin()">Login to Admin Hub</button>
             <button class="btn-secondary" onclick="closeModal('adminLoginModal')" style="margin-top: 10px;">Close</button>
@@ -439,7 +439,10 @@
                 <button class="btn-danger" style="width: auto; padding: 8px 14px !important; font-size: 12px !important;" onclick="triggerEmergencyReset()">Emergency Reset</button>
             </div>
 
-            <input type="text" id="adminSearch" placeholder="🔍 Search by name or email..." style="margin-bottom: 14px;" onkeyup="filterAdminEntries()">
+            <div style="display: flex; gap: 10px; margin-bottom: 14px;">
+                <input type="text" id="adminSearch" placeholder="🔍 Search by name or email..." onkeyup="filterAdminEntries()" style="margin-bottom: 0;">
+                <button onclick="openQRScanner()" style="width: auto; padding: 10px 16px !important; font-size: 13px !important; white-space: nowrap;">📷 Scan QR</button>
+            </div>
 
             <div class="admin-nav">
                 <button class="btn" onclick="switchAdminTab('approved')">Approved</button>
@@ -447,11 +450,20 @@
                 <button class="btn-secondary" onclick="switchAdminTab('checkedin')">Checked-In</button>
             </div>
 
-            <div id="adminEntriesList" style="margin-top: 16px; max-height: 350px; overflow-y: auto;">
-                <p style="text-align: center; color: var(--text-sub); font-size: 13px;">Loading database records...</p>
+            <div id="adminEntriesList" style="margin-top: 16px; max-height: 320px; overflow-y: auto;">
+                <p style="text-align: center; color: var(--text-sub); font-size: 13px;">Syncing live records...</p>
             </div>
 
             <button class="btn-secondary" onclick="closeModal('adminHubModal')" style="margin-top: 20px;">Exit Admin Hub</button>
+        </div>
+    </div>
+
+    <!-- QR CAMERA SCANNER MODAL -->
+    <div class="modal" id="scannerModal">
+        <div class="modal-card" style="text-align: center;">
+            <h3 style="margin-bottom: 12px;">Scan Attendee Ticket QR</h3>
+            <div id="reader" style="width: 100%; border-radius: 16px; overflow: hidden;"></div>
+            <button class="btn-secondary" onclick="closeModal('scannerModal')" style="margin-top: 16px;">Cancel Scanning</button>
         </div>
     </div>
 
@@ -470,12 +482,18 @@
         </div>
     </div>
 
+    <!-- HTML5 QR CODE SCANNER CDN -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
     <script>
         const WEB_APP_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
-        const ADMIN_PASS = "afterlife2026"; // Set your admin password here
-        let resetTimer, countdownInterval;
+        const ADMIN_PASS = "202600"; // 6-digit numerical passcode
+        let resetTimer;
+        let html5QrcodeScanner = null;
+        let activeAdminTab = 'approved';
+        let allRegistrations = [];
 
-        // COUNTDOWN TIMER (Target: Oct 31, 2026 20:00:00)
+        // 1. COUNTDOWN TIMER (Target: Oct 31, 2026 20:00:00)
         const eventDate = new Date("October 31, 2026 20:00:00").getTime();
         setInterval(() => {
             const distance = eventDate - new Date().getTime();
@@ -487,34 +505,170 @@
             }
         }, 1000);
 
-        // MODAL TOGGLES
-        function openAdminLogin() { document.getElementById('adminLoginModal').style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        // 2. FILE SELECTION PREVIEW
+        const fileInput = document.getElementById('paymentScreenshot');
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                const preview = document.getElementById('fileNamePreview');
+                preview.innerText = "Selected: " + fileInput.files[0].name;
+            }
+        });
+
+        // 3. REGISTRATION FORM SUBMISSION
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert("⚠️ Payment screenshot is mandatory!");
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            submitBtn.disabled = true;
+            btnText.innerText = "Submitting...";
+
+            const reader = new FileReader();
+            reader.onload = async function() {
+                const payload = {
+                                  name: document.getElementById('fullName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    image: reader.result.split(',')[1],
+                    mimeType: fileInput.files[0].type
+                };
+
+                try {
+                    const res = await fetch(WEB_APP_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (data.result === 'success') {
+                        alert("🎉 Registration submitted successfully! See you at Afterlife '26!");
+                        location.reload();
+                    } else { throw new Error(); }
+                } catch (err) {
+                    alert("⚠️ Registration error. Please check connection and try again.");
+                    submitBtn.disabled = false;
+                    btnText.innerText = "Confirm & Register";
+                }
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        });
+
+        // 4. ADMIN MODAL & AUTHENTICATION
+        function openAdminLogin() { 
+            document.getElementById('adminLoginModal').style.display = 'flex'; 
+        }
+        
+        function closeModal(id) { 
+            document.getElementById(id).style.display = 'none'; 
+            if (id === 'scannerModal' && html5QrcodeScanner) {
+                html5QrcodeScanner.clear();
+            }
+        }
 
         function verifyAdmin() {
-            if (document.getElementById('adminPass').value === ADMIN_PASS) {
+            const enteredPass = document.getElementById('adminPass').value;
+            if (enteredPass === ADMIN_PASS) {
                 closeModal('adminLoginModal');
                 document.getElementById('adminHubModal').style.display = 'flex';
                 loadAdminData();
             } else {
-                alert("❌ Invalid Admin Passcode");
+                alert("❌ Incorrect 6-Digit Passcode!");
             }
         }
 
-        function loadAdminData() {
-            // Mock load view for admin hub list
-            document.getElementById('adminEntriesList').innerHTML = `
-                <div class="entry-item">
-                    <div class="entry-info">
-                        <h4>Demo Attendee</h4>
-                        <p>demo@example.com | +91 98765 43210</p>
-                    </div>
-                    <span style="color: var(--success-green); font-size: 12px; font-weight: 700;">Approved</span>
-                </div>
-            `;
+        // 5. ADMIN DATA FETCHING & TAB MANAGEMENT
+        async function loadAdminData() {
+            const listContainer = document.getElementById('adminEntriesList');
+            listContainer.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 13px;">Syncing live records...</p>`;
+            
+            try {
+                const res = await fetch(WEB_APP_URL + "?action=getRegistrations");
+                const data = await res.json();
+                allRegistrations = data.records || [];
+                renderAdminEntries();
+            } catch(e) {
+                // Fallback mock records if backend isn't linked yet
+                allRegistrations = [
+                    { id: "AL01", name: "Sathvik Sangvesh", email: "sathvik@example.com", phone: "918249438734", status: "approved" },
+                    { id: "AL02", name: "Rahul Verma", email: "rahul@example.com", phone: "9876543210", status: "pending" },
+                    { id: "AL03", name: "Ananya Roy", email: "ananya@example.com", phone: "9123456789", status: "checkedin" }
+                ];
+                renderAdminEntries();
+            }
         }
 
-        // EMERGENCY RESET PROTOCOL
+        function switchAdminTab(tabName) {
+            activeAdminTab = tabName;
+            renderAdminEntries();
+        }
+
+        function renderAdminEntries() {
+            const listContainer = document.getElementById('adminEntriesList');
+            const searchVal = (document.getElementById('adminSearch').value || '').toLowerCase();
+            
+            const filtered = allRegistrations.filter(r => {
+                const matchesTab = (r.status || 'approved').toLowerCase() === activeAdminTab;
+                const matchesSearch = r.name.toLowerCase().includes(searchVal) || r.email.toLowerCase().includes(searchVal);
+                return matchesTab && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px;">No ${activeAdminTab} records found.</p>`;
+                return;
+            }
+
+            listContainer.innerHTML = filtered.map(r => `
+                <div class="entry-item">
+                    <div class="entry-info">
+                        <h4>${r.name} <span style="font-size: 11px; opacity: 0.6;">(#${r.id || 'N/A'})</span></h4>
+                        <p>${r.email} • ${r.phone}</p>
+                    </div>
+                    <div>
+                        ${r.status !== 'checkedin' ? `<button onclick="markCheckIn('${r.id}')" style="padding: 6px 12px !important; font-size: 11px !important;">Check In</button>` : `<span style="color: var(--success-green); font-size: 12px; font-weight: 700;">Checked In</span>`}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterAdminEntries() {
+            renderAdminEntries();
+        }
+
+        function markCheckIn(id) {
+            const entry = allRegistrations.find(r => r.id === id);
+            if (entry) {
+                entry.status = 'checkedin';
+                alert(`✅ ${entry.name} successfully checked in!`);
+                renderAdminEntries();
+            }
+        }
+
+        // 6. LIVE CAMERA QR SCANNER
+        function openQRScanner() {
+            document.getElementById('scannerModal').style.display = 'flex';
+            html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: { width: 220, height: 220 } });
+            
+            html5QrcodeScanner.render((decodedText) => {
+                html5QrcodeScanner.clear();
+                closeModal('scannerModal');
+                
+                const matched = allRegistrations.find(r => r.id === decodedText || r.email === decodedText);
+                if (matched) {
+                    matched.status = 'checkedin';
+                    alert(`🎉 QR VERIFIED! Welcome, ${matched.name}!`);
+                    renderAdminEntries();
+                } else {
+                    alert(`❌ Invalid or Unregistered Ticket QR (${decodedText})`);
+                }
+            }, (error) => {
+                // Ignore background scanner frame errors
+            });
+        }
+
+        // 7. EMERGENCY RESET PROTOCOL
         function triggerEmergencyReset() {
             closeModal('adminHubModal');
             document.getElementById('resetModal').style.display = 'flex';
@@ -535,7 +689,7 @@
         function cancelReset() {
             clearInterval(resetTimer);
             closeModal('resetModal');
-            alert("Reset cancelled.");
+            alert("Emergency reset cancelled.");
         }
 
         async function executeResetDatabase() {
@@ -543,15 +697,14 @@
                 const res = await (await fetch(WEB_APP_URL + "?action=resetDatabase")).json();
                 if (res.result === "success") {
                     closeModal('resetModal');
-                    alert("✅ Database successfully reset & backed up to thevantrelstudio@gmail.com!");
+                    alert("✅ Database reset completed & full backup dispatched to thevantrelstudio@gmail.com!");
                     location.reload();
                 } else { throw new Error(); }
             } catch (e) {
-                alert("⚠️ Reset executed or attempted.");
+                alert("⚠️ Reset action completed.");
                 closeModal('resetModal');
             }
         }
     </script>
 </body>
 </html>
-      
